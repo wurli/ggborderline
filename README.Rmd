@@ -1,5 +1,6 @@
 ---
 output: github_document
+always_allow_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -18,37 +19,79 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of ggborderline is to ...
+{ggborderline} provides a set of geoms to make line plots a little bit nicer. Use
+this package along with [ggplot2](https://ggplot2.tidyverse.org/) to:
 
-## Installation
+* Improve the clarity of line plots with many overlapping lines
+* Draw more realistic worms
 
-You can install the released version of ggborderline from [CRAN](https://CRAN.R-project.org) with:
+# Installation
 
-``` r
-install.packages("ggborderline")
+You can install the development version of ggborderline from [github](https://github.com/wurli/ggborderline) with:
+```r
+remotes::install_github("wurli/ggborderline")
 ```
 
-## Example
+## Usage
 
-This is a basic example which shows you how to solve a common problem:
+Here is a very basic line plot 
 
 ```{r example}
 library(ggborderline)
-## basic example code
+library(ggplot2)
+
+# geom_borderline() adds a border around lines
+ggplot(economics_long, aes(date, value01, colour = variable)) +
+  geom_borderline()
+
+# You can control the size and colour of the border with the
+# border_size and border_colour aesthetics:
+ggplot(economics_long, aes(date, value01, border_colour = variable)) +
+  geom_borderline(border_size = .4, colour = "white")
+
+# The background 'border' part of the geom is always solid, however this
+# can be used to create some nice effects:
+x <- seq(0, 4 * pi, length.out = 500)
+test_data <- data.frame(
+  x = rep(x, 2), y = c(sin(x), cos(x)),
+  fun = rep(c("sin", "cos"), each = 500)
+)
+
+ggplot(test_data, aes(x, y, colour = fun)) +
+  geom_borderline(size = 1, linetype = "dashed", lineend = "round")
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+<details>
+<summary>Click here for hyper-realistic worms</summary>
+```{r, echo = FALSE}
+x <- seq(-1, 0.5, length.out = 500)
+worm_data <- data.frame(
+  x = rep(x, 2), y = c(sin(x * pi), cos(x * pi)),
+  colour = rep(c("pink", "pink2"), each = 500)
+)
 
-```{r cars}
-summary(cars)
+dirt <- c("#453d30", "#453d30", "#988b77", "#856e52", "#695e48")
+
+colours <- data.frame(
+  x = runif(30000, -1.1, 0.6), y = runif(30000, -1.1, 1.1),
+  colour = sample(dirt, 10000, replace = TRUE)
+)
+
+ggplot(worm_data, aes(x, y, colour = colour)) +
+  geom_point(data = colours, size = 2.5, alpha = 0.8) +
+  geom_borderline(size = 10, border_size = 1, border_colour = "pink3", lineend = "round") +
+  scale_colour_identity() +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "grey10")) +
+  annotate(geom = "text", label = ":)", x = 0.5, y = 0:1, angle = 270, size = 6)
 ```
+</details>
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/master/examples>.
+# Inspiration
+I made this package after seeing this *beautiful* plot by [Rosamund Pearce](https://twitter.com/_rospearce):
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I designed my first double-page <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> for The Economist!<br><br>It depicts our new &#39;Normalcy index&#39;, which tracks the world&#39;s return to pre-pandemic life &gt;&gt; <a href="https://t.co/Iko6totfJN">https://t.co/Iko6totfJN</a> <a href="https://t.co/1sIUMoZco1">pic.twitter.com/1sIUMoZco1</a></p>&mdash; Rosamund Pearce (@_rospearce) <a href="https://twitter.com/_rospearce/status/1410903833442717698?ref_src=twsrc%5Etfw">July 2, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+# Credit
+This package would not have been possible without the fantastic [ggplot2](https://ggplot2.tidyverse.org/)
+package, and would have been very difficult without the [accompanying book](https://ggplot2-book.org/). 
+My humble and sincere thanks go to all the authors who make projects like this possible.
