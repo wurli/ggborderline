@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/wurli/ggborderline/workflows/R-CMD-check/badge.svg)](https://github.com/wurli/ggborderline/actions)
 <!-- badges: end -->
 
 {ggborderline} provides a set of geoms to make line plots a little bit nicer. Use
@@ -81,7 +82,7 @@ remotes::install_github("wurli/ggborderline")
 ```
 
 # Inspiration
-I made this package after seeing this plot by [Rosamund Pearce](https://twitter.com/_rospearce),
+I made this package after seeing this plot tweeted by [Rosamund Pearce](https://twitter.com/_rospearce),
 an experience that forever soured me to lines without borders:
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">I designed my first double-page <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> for The Economist!<br><br>It depicts our new &#39;Normalcy index&#39;, which tracks the world&#39;s return to pre-pandemic life &gt;&gt; <a href="https://t.co/Iko6totfJN">https://t.co/Iko6totfJN</a> <a href="https://t.co/1sIUMoZco1">pic.twitter.com/1sIUMoZco1</a></p>&mdash; Rosamund Pearce (@_rospearce) <a href="https://twitter.com/_rospearce/status/1410903833442717698?ref_src=twsrc%5Etfw">July 2, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 

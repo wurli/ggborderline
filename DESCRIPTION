@@ -1,11 +1,14 @@
 Package: ggborderline
+URL: https://github.com/wurli/ggborderline, https://wurli.github.io/ggborderline/ 
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Make Line Plots that *Pop*
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Jacob Scott
+Maintainer: Jacob Scott <jscott2718@gmail.com>
+Description: {ggborderline} provides a set of geoms to make line plots a little 
+    bit nicer. Use this package along with ggplot2 to:
+    - Improve the clarity of line plots with many overlapping lines
+    - Draw more realistic worms
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -3,6 +3,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/wurli/ggborderline/workflows/R-CMD-check/badge.svg)](https://github.com/wurli/ggborderline/actions)
 <!-- badges: end -->
 
 {ggborderline} provides a set of geoms to make line plots a little bit
@@ -58,7 +60,7 @@ remotes::install_github("wurli/ggborderline")
 
 # Inspiration
 
-I made this package after seeing this plot by [Rosamund
+I made this package after seeing this plot tweeted by [Rosamund
 Pearce](https://twitter.com/_rospearce), an experience that forever
 soured me to lines without borders:
 <blockquote class="twitter-tweet">

@@ -119,7 +119,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
 
   default_aes = aes(
     colour = "black", size = 0.5, linetype = 1, alpha = NA,
-    border_colour = "white", border_size = 0.3
+    border_colour = "white", border_size = 0.2
   ),
 
   draw_panel = function(data, panel_params, coord, arrow = NULL,
