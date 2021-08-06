@@ -42,8 +42,6 @@ plot + geom_line() + ggtitle("Using `geom_line()`")
 Click here for more uses
 </summary>
 
-    #> Warning: Ignoring unknown parameters: bordersize, bordercolour
-
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 [Worm code](https://github.com/wurli/ggborderline/blob/main/README.Rmd)
