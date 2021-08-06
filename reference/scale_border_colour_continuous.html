@@ -129,33 +129,27 @@ work in much the same way as <code><a href='https://ggplot2.tidyverse.org/refere
 <code><a href='https://ggplot2.tidyverse.org/reference/scale_size.html'>ggplot2::scale_size_discrete()</a></code>, etc.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>scale_border_colour_continuous</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>scale_border_colour_continuous</span><span class='op'>(</span><span class='va'>...</span>, aesthetics <span class='op'>=</span> <span class='st'>"border_colour"</span><span class='op'>)</span>
 
-<span class='fu'>scale_border_colour_discrete</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>scale_border_colour_discrete</span><span class='op'>(</span><span class='va'>...</span>, aesthetics <span class='op'>=</span> <span class='st'>"border_colour"</span><span class='op'>)</span>
 
-<span class='fu'>scale_border_size_continuous</span><span class='op'>(</span>
-  name <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/waiver.html'>waiver</a></span><span class='op'>(</span><span class='op'>)</span>,
-  breaks <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/waiver.html'>waiver</a></span><span class='op'>(</span><span class='op'>)</span>,
-  labels <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/waiver.html'>waiver</a></span><span class='op'>(</span><span class='op'>)</span>,
-  limits <span class='op'>=</span> <span class='cn'>NULL</span>,
-  range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>6</span><span class='op'>)</span>,
-  trans <span class='op'>=</span> <span class='st'>"identity"</span>,
-  guide <span class='op'>=</span> <span class='st'>"legend"</span>
-<span class='op'>)</span>
+<span class='fu'>scale_border_size_continuous</span><span class='op'>(</span><span class='va'>...</span>, aesthetics <span class='op'>=</span> <span class='st'>"border_size"</span><span class='op'>)</span>
 
-<span class='fu'>scale_border_size_discrete</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>scale_border_size_discrete</span><span class='op'>(</span><span class='va'>...</span>, aesthetics <span class='op'>=</span> <span class='st'>"border_size"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>Passed to the relevent ggplot2 scale</p></td>
+      <td><p>Passed to the corresponding ggplot2 scales</p></td>
     </tr>
     <tr>
-      <th>breaks, labels, limits, range, trans, guide, name</th>
-      <td><p>Refer to the <code>ggplot2</code>
-functions to see how these work</p></td>
+      <th>aesthetics</th>
+      <td><p>Character string or vector of character strings listing the
+name(s) of the aesthetic(s) that this scale works with. This can be useful,
+for example, to apply colour settings to the border_colour and colour
+aesthetics at the same time, via aesthetics = c("border_colour", "colour").</p></td>
     </tr>
     </table>
 
