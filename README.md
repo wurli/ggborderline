@@ -1,8 +1,7 @@
 
+# ggborderline <img src="man/figures/logo.png" align="right" />
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# ggborderline
-
 <!-- badges: start -->
 <!-- badges: end -->
 
@@ -13,6 +12,41 @@ nicer. Use this package along with
 -   Improve the clarity of line plots with many overlapping lines
 -   Draw more realistic worms
 
+## Usage
+
+Simply changing `ggplot2::geom_line()` for `geom_borderline()` can make
+a big difference:
+
+``` r
+library(ggborderline)
+library(ggplot2)
+library(dplyr, warn.conflicts = FALSE)
+library(patchwork)
+
+plot <- economics_long %>% 
+  group_by(year = lubridate::year(date), variable) %>% 
+  summarise(yearly_total = sum(value01), .groups = "drop") %>% 
+  filter(year %in% 1970:2010) %>% 
+  ggplot(aes(year, yearly_total, colour = variable)) +
+  theme(legend.position = "bottom")
+
+plot + geom_borderline() + ggtitle("Using `geom_borderline()`")
+plot + geom_line() + ggtitle("Using `geom_line()`")
+```
+
+<img src="man/figures/README-example-1.png" width="50%" /><img src="man/figures/README-example-2.png" width="50%" />
+<details>
+<summary>
+Click here for more uses
+</summary>
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+[Click here for worm
+code](https://github.com/wurli/ggborderline/blob/main/README.Rmd)
+
+</details>
+
 # Installation
 
 You can install the development version of ggborderline from
@@ -22,56 +56,11 @@ You can install the development version of ggborderline from
 remotes::install_github("wurli/ggborderline")
 ```
 
-## Usage
-
-Here is a very basic line plot
-
-``` r
-library(ggborderline)
-library(ggplot2)
-
-# geom_borderline() adds a border around lines
-ggplot(economics_long, aes(date, value01, colour = variable)) +
-  geom_borderline()
-```
-
-<img src="man/figures/README-example-1.png" width="100%" />
-
-``` r
-# You can control the size and colour of the border with the
-# border_size and border_colour aesthetics:
-ggplot(economics_long, aes(date, value01, border_colour = variable)) +
-  geom_borderline(border_size = .4, colour = "white")
-```
-
-<img src="man/figures/README-example-2.png" width="100%" />
-
-``` r
-# The background 'border' part of the geom is always solid, however this
-# can be used to create some nice effects:
-x <- seq(0, 4 * pi, length.out = 500)
-test_data <- data.frame(
-  x = rep(x, 2), y = c(sin(x), cos(x)),
-  fun = rep(c("sin", "cos"), each = 500)
-)
-
-ggplot(test_data, aes(x, y, colour = fun)) +
-  geom_borderline(size = 1, linetype = "dashed", lineend = "round")
-```
-
-<img src="man/figures/README-example-3.png" width="100%" />
-
-<details>
-<summary>
-Click here for hyper-realistic worms
-</summary>
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
-</details>
-
 # Inspiration
 
-I made this package after seeing this *beautiful* plot by [Rosamund
-Pearce](https://twitter.com/_rospearce):
+I made this package after seeing this plot by [Rosamund
+Pearce](https://twitter.com/_rospearce), an experience that forever
+soured me to lines without borders:
 <blockquote class="twitter-tweet">
 <p lang="en" dir="ltr">
 I designed my first double-page

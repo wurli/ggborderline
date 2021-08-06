@@ -1,0 +1,7 @@
+reference:
+- title: "Additional Geoms"
+- contents:
+  - starts_with("geom")
+- title: "Additional scales"
+- contents:
+  - starts_with("scale")

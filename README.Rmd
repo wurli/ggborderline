@@ -2,7 +2,7 @@
 output: github_document
 always_allow_html: true
 ---
-
+# ggborderline <img src="man/figures/logo.png" align="right" />
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
@@ -14,8 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ggborderline
-
 <!-- badges: start -->
 <!-- badges: end -->
 
@@ -25,44 +23,29 @@ this package along with [ggplot2](https://ggplot2.tidyverse.org/) to:
 * Improve the clarity of line plots with many overlapping lines
 * Draw more realistic worms
 
-# Installation
-
-You can install the development version of ggborderline from [github](https://github.com/wurli/ggborderline) with:
-```r
-remotes::install_github("wurli/ggborderline")
-```
-
 ## Usage
 
-Here is a very basic line plot 
+Simply changing `ggplot2::geom_line()` for `geom_borderline()` can make a big
+difference:
 
-```{r example}
+```{r example, fig.show="hold", out.width="50%", fig.width = 5}
 library(ggborderline)
 library(ggplot2)
+library(dplyr, warn.conflicts = FALSE)
+library(patchwork)
 
-# geom_borderline() adds a border around lines
-ggplot(economics_long, aes(date, value01, colour = variable)) +
-  geom_borderline()
+plot <- economics_long %>% 
+  group_by(year = lubridate::year(date), variable) %>% 
+  summarise(yearly_total = sum(value01), .groups = "drop") %>% 
+  filter(year %in% 1970:2010) %>% 
+  ggplot(aes(year, yearly_total, colour = variable)) +
+  theme(legend.position = "bottom")
 
-# You can control the size and colour of the border with the
-# border_size and border_colour aesthetics:
-ggplot(economics_long, aes(date, value01, border_colour = variable)) +
-  geom_borderline(border_size = .4, colour = "white")
-
-# The background 'border' part of the geom is always solid, however this
-# can be used to create some nice effects:
-x <- seq(0, 4 * pi, length.out = 500)
-test_data <- data.frame(
-  x = rep(x, 2), y = c(sin(x), cos(x)),
-  fun = rep(c("sin", "cos"), each = 500)
-)
-
-ggplot(test_data, aes(x, y, colour = fun)) +
-  geom_borderline(size = 1, linetype = "dashed", lineend = "round")
+plot + geom_borderline() + ggtitle("Using `geom_borderline()`")
+plot + geom_line() + ggtitle("Using `geom_line()`")
 ```
-
 <details>
-<summary>Click here for hyper-realistic worms</summary>
+<summary>Click here for more uses</summary>
 ```{r, echo = FALSE}
 x <- seq(-1, 0.5, length.out = 500)
 worm_data <- data.frame(
@@ -85,10 +68,21 @@ ggplot(worm_data, aes(x, y, colour = colour)) +
   theme(panel.background = element_rect(fill = "grey10")) +
   annotate(geom = "text", label = ":)", x = 0.5, y = 0:1, angle = 270, size = 6)
 ```
+
+[Click here for worm code](https://github.com/wurli/ggborderline/blob/main/README.Rmd)
+
 </details>
 
+# Installation
+
+You can install the development version of ggborderline from [github](https://github.com/wurli/ggborderline) with:
+```{r, eval = FALSE}
+remotes::install_github("wurli/ggborderline")
+```
+
 # Inspiration
-I made this package after seeing this *beautiful* plot by [Rosamund Pearce](https://twitter.com/_rospearce):
+I made this package after seeing this plot by [Rosamund Pearce](https://twitter.com/_rospearce),
+an experience that forever soured me to lines without borders:
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">I designed my first double-page <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> for The Economist!<br><br>It depicts our new &#39;Normalcy index&#39;, which tracks the world&#39;s return to pre-pandemic life &gt;&gt; <a href="https://t.co/Iko6totfJN">https://t.co/Iko6totfJN</a> <a href="https://t.co/1sIUMoZco1">pic.twitter.com/1sIUMoZco1</a></p>&mdash; Rosamund Pearce (@_rospearce) <a href="https://twitter.com/_rospearce/status/1410903833442717698?ref_src=twsrc%5Etfw">July 2, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 # Credit

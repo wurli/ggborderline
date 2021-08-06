@@ -1,3 +1,6 @@
+#' Key glyphs for legends
+#'
+#' @param data,params,size See `ggplot2::draw_key_path()` for usage
 #' @export
 draw_key_borderpath <- function(data, params, size) {
 
@@ -334,6 +337,8 @@ GeomBorderstep <- ggproto("GeomBorderstep", GeomBorderpath,
 #' `ggplot2::scale_size_discrete()`, etc.
 #'
 #' @param ... Passed to the relevent ggplot2 scale
+#' @param breaks,labels,limits,range,trans,guide,name Refer to the `ggplot2`
+#' functions to see how these work
 #'
 #' @export
 scale_border_colour_continuous <- function(...) {
@@ -352,14 +357,11 @@ scale_border_size_continuous <- function(name = waiver(), breaks = waiver(),
                                          labels = waiver(), limits = NULL,
                                          range = c(1, 6), trans = "identity",
                                          guide = "legend") {
-  continuous_scale("border_size", "area", area_pal(range), name = name,
+  continuous_scale("border_size", "area", scales::area_pal(range), name = name,
                    breaks = breaks, labels = labels, limits = limits,
                    trans = trans, guide = guide)
 }
 
 #' @rdname scale_border_colour_continuous
 #' @export
-scale_border_size_discrete <- function(...) {
-  warning("Using size for a discrete variable is not advised.")
-  scale_size_ordinal(...)
-}
+scale_border_size_discrete <- scale_size_discrete

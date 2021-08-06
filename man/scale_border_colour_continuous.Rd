@@ -25,6 +25,9 @@ scale_border_size_discrete(...)
 }
 \arguments{
 \item{...}{Passed to the relevent ggplot2 scale}
+
+\item{breaks, labels, limits, range, trans, guide, name}{Refer to the \code{ggplot2}
+functions to see how these work}
 }
 \description{
 These scales control the size and colour of the borders in borderlines. They
