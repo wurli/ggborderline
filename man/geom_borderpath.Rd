@@ -109,8 +109,8 @@ adjacent x-values.}
 \description{
 This set of geoms is very similar to \code{ggplot2::ggeom_path()},
 \code{ggplot2::geom_line()} and \code{ggplot2::geom_step()}, with the only difference
-being that they accept two additional aesthetics, \code{border_colour} and
-\code{border_size}. For additional documentation, please refer to the ggplot2
+being that they accept two additional aesthetics, \code{bordercolour} and
+\code{bordersize}. For additional documentation, please refer to the ggplot2
 geoms.
 }
 \examples{
@@ -121,9 +121,9 @@ ggplot(economics_long, aes(date, value01, colour = variable)) +
   geom_borderline()
 
 # You can control the size and colour of the border with the
-# border_size and border_colour aesthetics:
-ggplot(economics_long, aes(date, value01, border_colour = variable)) +
-  geom_borderline(border_size = .4, colour = "white")
+# bordersize and bordercolour aesthetics:
+ggplot(economics_long, aes(date, value01, bordercolour = variable)) +
+  geom_borderline(bordersize = .4, colour = "white")
 
 # The background 'border' part of the geom is always solid, however this
 # can be used to create some nice effects:

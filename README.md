@@ -42,10 +42,11 @@ plot + geom_line() + ggtitle("Using `geom_line()`")
 Click here for more uses
 </summary>
 
+    #> Warning: Ignoring unknown parameters: bordersize, bordercolour
+
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-[Click here for worm
-code](https://github.com/wurli/ggborderline/blob/main/README.Rmd)
+[Worm code](https://github.com/wurli/ggborderline/blob/main/README.Rmd)
 
 </details>
 
@@ -77,6 +78,18 @@ tracks the world's return to pre-pandemic life &gt;&gt;
 2, 2021</a>
 </blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+# Other Approaches
+
+While these effects can be achieved using {ggplot2} alone if you have
+the patience, there are other packages which provide other methods for
+achieving bordered lines. [{ggfx}](https://ggfx.data-imaginist.com/) is
+much more powerful, but would perhaps be overkill for something as
+simple as adding a border around a line.
+[{ggshadow}](https://github.com/marcmenem/ggshadow) is another great
+alternative which implements the shadow using a slightly different
+approach, and also comes with some other handy features. You are
+encouraged to try both!
 
 # Credit
 

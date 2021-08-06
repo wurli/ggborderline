@@ -16,10 +16,10 @@ draw_key_borderpath <- function(data, params, size) {
       0.1, 0.5, 0.9, 0.5,
       arrow = params$arrow,
       gp = gpar(
-        col = alpha(data$border_colour %||% data$fill %||% "white", data$alpha),
+        col = alpha(data$bordercolour %||% data$fill %||% "white", data$alpha),
         fill = alpha(params$arrow.fill %||% data$colour
                      %||% data$fill %||% "white", data$alpha),
-        lwd = (data$size %||% 0.5 + (data$border_size %||%  0.5) * 2) * .pt,
+        lwd = (data$size %||% 0.5 + (data$bordersize %||%  0.5) * 2) * .pt,
         lty = data$linetype %||% 1,
         lineend = "butt"
 
@@ -48,8 +48,8 @@ draw_key_borderpath <- function(data, params, size) {
 #'
 #' This set of geoms is very similar to `ggplot2::ggeom_path()`,
 #' `ggplot2::geom_line()` and `ggplot2::geom_step()`, with the only difference
-#' being that they accept two additional aesthetics, `border_colour` and
-#' `border_size`. For additional documentation, please refer to the ggplot2
+#' being that they accept two additional aesthetics, `bordercolour` and
+#' `bordersize`. For additional documentation, please refer to the ggplot2
 #' geoms.
 #'
 #' @inheritParams ggplot2::layer
@@ -71,9 +71,9 @@ draw_key_borderpath <- function(data, params, size) {
 #'   geom_borderline()
 #'
 #' # You can control the size and colour of the border with the
-#' # border_size and border_colour aesthetics:
-#' ggplot(economics_long, aes(date, value01, border_colour = variable)) +
-#'   geom_borderline(border_size = .4, colour = "white")
+#' # bordersize and bordercolour aesthetics:
+#' ggplot(economics_long, aes(date, value01, bordercolour = variable)) +
+#'   geom_borderline(bordersize = .4, colour = "white")
 #'
 #' # The background 'border' part of the geom is always solid, however this
 #' # can be used to create some nice effects:
@@ -119,7 +119,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
 
   default_aes = aes(
     colour = "black", size = 0.5, linetype = 1, alpha = NA,
-    border_colour = "white", border_size = 0.2
+    bordercolour = "white", bordersize = 0.2
   ),
 
   draw_panel = function(data, panel_params, coord, arrow = NULL,
@@ -174,9 +174,9 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
           munched$x[!end], munched$y[!end], munched$x[!start], munched$y[!start],
           default.units = "native", arrow = arrow,
           gp = gpar(
-            col = alpha(munched$border_colour, munched$alpha)[!end],
-            fill = alpha(munched$border_colour, munched$alpha)[!end],
-            lwd = (munched$size[start] + munched$border_size[start] * 2) * .pt,
+            col = alpha(munched$bordercolour, munched$alpha)[!end],
+            fill = alpha(munched$bordercolour, munched$alpha)[!end],
+            lwd = (munched$size[start] + munched$bordersize[start] * 2) * .pt,
             lty = "solid",
             lineend = lineend,
             linejoin = linejoin,
@@ -188,8 +188,8 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
           munched$x[!end], munched$y[!end], munched$x[!start], munched$y[!start],
           default.units = "native", arrow = arrow,
           gp = gpar(
-            col = alpha(munched$border_colour, munched$alpha)[!end],
-            fill = alpha(munched$border_colour, munched$alpha)[!end],
+            col = alpha(munched$bordercolour, munched$alpha)[!end],
+            fill = alpha(munched$bordercolour, munched$alpha)[!end],
             lwd = munched$size[start] * .pt,
             lty = munched$linetype[!end],
             lineend = lineend,
@@ -212,9 +212,9 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
             m$x, m$y, id = id,
             default.units = "native", arrow = arrow,
             gp = gpar(
-              col = alpha(m$border_colour, m$alpha)[start],
-              fill = alpha(m$border_colour, m$alpha)[start],
-              lwd = (m$size[start] + m$border_size[start] * 2) * .pt,
+              col = alpha(m$bordercolour, m$alpha)[start],
+              fill = alpha(m$bordercolour, m$alpha)[start],
+              lwd = (m$size[start] + m$bordersize[start] * 2) * .pt,
               lty = "solid",
               lineend = lineend,
               linejoin = linejoin,
@@ -339,35 +339,35 @@ GeomBorderstep <- ggproto("GeomBorderstep", GeomBorderpath,
 #' @param ... Passed to the corresponding ggplot2 scales
 #' @param aesthetics Character string or vector of character strings listing the
 #'   name(s) of the aesthetic(s) that this scale works with. This can be useful,
-#'   for example, to apply colour settings to the border_colour and colour
-#'   aesthetics at the same time, via aesthetics = c("border_colour", "colour").
+#'   for example, to apply colour settings to the bordercolour and colour
+#'   aesthetics at the same time, via aesthetics = c("bordercolour", "colour").
 #'
 #' @export
-scale_border_colour_continuous <- function(..., aesthetics = "border_colour") {
+scale_bordercolour_continuous <- function(..., aesthetics = "bordercolour") {
   out <- scale_colour_continuous(...)
   out$aesthetics <- aesthetics
   out
 }
 
-#' @rdname scale_border_colour_continuous
+#' @rdname scale_bordercolour_continuous
 #' @export
-scale_border_colour_discrete <- function(..., aesthetics = "border_colour") {
+scale_bordercolour_discrete <- function(..., aesthetics = "bordercolour") {
   out <- scale_colour_discrete(...)
   out$aesthetics = aesthetics
   out
 }
 
-#' @rdname scale_border_colour_continuous
+#' @rdname scale_bordercolour_continuous
 #' @export
-scale_border_size_continuous <- function(..., aesthetics = "border_size") {
+scale_bordersize_continuous <- function(..., aesthetics = "bordersize") {
   out <- scale_size_continuous(...)
   out$aesthetics <- aesthetics
   out
 }
 
-#' @rdname scale_border_colour_continuous
+#' @rdname scale_bordercolour_continuous
 #' @export
-scale_border_size_discrete <- function(..., aesthetics = "border_size") {
+scale_bordersize_discrete <- function(..., aesthetics = "bordersize") {
   out <- scale_size_discrete(...)
   out$aesthetics <- aesthetics
   out
