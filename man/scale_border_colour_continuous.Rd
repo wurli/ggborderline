@@ -7,27 +7,21 @@
 \alias{scale_border_size_discrete}
 \title{Scales for borderlines}
 \usage{
-scale_border_colour_continuous(...)
+scale_border_colour_continuous(..., aesthetics = "border_colour")
 
-scale_border_colour_discrete(...)
+scale_border_colour_discrete(..., aesthetics = "border_colour")
 
-scale_border_size_continuous(
-  name = waiver(),
-  breaks = waiver(),
-  labels = waiver(),
-  limits = NULL,
-  range = c(1, 6),
-  trans = "identity",
-  guide = "legend"
-)
+scale_border_size_continuous(..., aesthetics = "border_size")
 
-scale_border_size_discrete(...)
+scale_border_size_discrete(..., aesthetics = "border_size")
 }
 \arguments{
-\item{...}{Passed to the relevent ggplot2 scale}
+\item{...}{Passed to the corresponding ggplot2 scales}
 
-\item{breaks, labels, limits, range, trans, guide, name}{Refer to the \code{ggplot2}
-functions to see how these work}
+\item{aesthetics}{Character string or vector of character strings listing the
+name(s) of the aesthetic(s) that this scale works with. This can be useful,
+for example, to apply colour settings to the border_colour and colour
+aesthetics at the same time, via aesthetics = c("border_colour", "colour").}
 }
 \description{
 These scales control the size and colour of the borders in borderlines. They

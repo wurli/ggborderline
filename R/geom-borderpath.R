@@ -336,32 +336,39 @@ GeomBorderstep <- ggproto("GeomBorderstep", GeomBorderpath,
 #' work in much the same way as `ggplot2::scale_colour_continuous()`,
 #' `ggplot2::scale_size_discrete()`, etc.
 #'
-#' @param ... Passed to the relevent ggplot2 scale
-#' @param breaks,labels,limits,range,trans,guide,name Refer to the `ggplot2`
-#' functions to see how these work
+#' @param ... Passed to the corresponding ggplot2 scales
+#' @param aesthetics Character string or vector of character strings listing the
+#'   name(s) of the aesthetic(s) that this scale works with. This can be useful,
+#'   for example, to apply colour settings to the border_colour and colour
+#'   aesthetics at the same time, via aesthetics = c("border_colour", "colour").
 #'
 #' @export
-scale_border_colour_continuous <- function(...) {
-  scale_colour_continuous(..., aesthetics = "border_colour")
+scale_border_colour_continuous <- function(..., aesthetics = "border_colour") {
+  out <- scale_colour_continuous(...)
+  out$aesthetics <- aesthetics
+  out
 }
 
 #' @rdname scale_border_colour_continuous
 #' @export
-scale_border_colour_discrete <- function(...) {
-  scale_colour_discrete(..., aesthetics = "border_colour")
+scale_border_colour_discrete <- function(..., aesthetics = "border_colour") {
+  out <- scale_colour_discrete(...)
+  out$aesthetics = aesthetics
+  out
 }
 
 #' @rdname scale_border_colour_continuous
 #' @export
-scale_border_size_continuous <- function(name = waiver(), breaks = waiver(),
-                                         labels = waiver(), limits = NULL,
-                                         range = c(1, 6), trans = "identity",
-                                         guide = "legend") {
-  continuous_scale("border_size", "area", scales::area_pal(range), name = name,
-                   breaks = breaks, labels = labels, limits = limits,
-                   trans = trans, guide = guide)
+scale_border_size_continuous <- function(..., aesthetics = "border_size") {
+  out <- scale_size_continuous(...)
+  out$aesthetics <- aesthetics
+  out
 }
 
 #' @rdname scale_border_colour_continuous
 #' @export
-scale_border_size_discrete <- scale_size_discrete
+scale_border_size_discrete <- function(..., aesthetics = "border_size") {
+  out <- scale_size_discrete(...)
+  out$aesthetics <- aesthetics
+  out
+}
