@@ -9,6 +9,9 @@ draw_key_borderpath(data, params, size)
 \arguments{
 \item{data, params, size}{See \code{ggplot2::draw_key_path()} for usage}
 }
+\value{
+A gTree object
+}
 \description{
 Key glyphs for legends
 }

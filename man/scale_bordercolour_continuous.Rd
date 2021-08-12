@@ -23,6 +23,9 @@ name(s) of the aesthetic(s) that this scale works with. This can be useful,
 for example, to apply colour settings to the bordercolour and colour
 aesthetics at the same time, via aesthetics = c("bordercolour", "colour").}
 }
+\value{
+A ggproto scale object
+}
 \description{
 These scales control the size and colour of the borders in borderlines. They
 work in much the same way as \code{ggplot2::scale_colour_continuous()},

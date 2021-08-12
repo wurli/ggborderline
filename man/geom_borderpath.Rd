@@ -106,8 +106,11 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 'hv' for horizontal then vertical, or 'mid' for step half-way between
 adjacent x-values.}
 }
+\value{
+A ggproto layer object
+}
 \description{
-This set of geoms is very similar to \code{ggplot2::ggeom_path()},
+This set of geoms is very similar to \code{ggplot2::geom_path()},
 \code{ggplot2::geom_line()} and \code{ggplot2::geom_step()}, with the only difference
 being that they accept two additional aesthetics, \code{bordercolour} and
 \code{bordersize}. For additional documentation, please refer to the ggplot2

@@ -5,13 +5,13 @@ Title: Line Plots that Pop
 Version: 0.1.0
 Author: Jacob Scott
 Maintainer: Jacob Scott <jscott2718@gmail.com>
-Description: {ggborderline} provides a set of geoms to make line plots a little 
-    bit nicer. Use this package along with ggplot2 to:
+Description: A set of geometries to make line plots a little bit nicer. Use 
+    along with 'ggplot2' to:
     - Improve the clarity of line plots with many overlapping lines
     - Draw more realistic worms.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Imports: 
     ggplot2,
     scales

@@ -1,6 +1,9 @@
 #' Key glyphs for legends
 #'
 #' @param data,params,size See `ggplot2::draw_key_path()` for usage
+#'
+#' @return A gTree object
+#'
 #' @export
 draw_key_borderpath <- function(data, params, size) {
 
@@ -46,7 +49,7 @@ draw_key_borderpath <- function(data, params, size) {
 
 #' Connect observations
 #'
-#' This set of geoms is very similar to `ggplot2::ggeom_path()`,
+#' This set of geoms is very similar to `ggplot2::geom_path()`,
 #' `ggplot2::geom_line()` and `ggplot2::geom_step()`, with the only difference
 #' being that they accept two additional aesthetics, `bordercolour` and
 #' `bordersize`. For additional documentation, please refer to the ggplot2
@@ -61,6 +64,8 @@ draw_key_borderpath <- function(data, params, size) {
 #' @param linejoin Line join style (round, mitre, bevel).
 #' @param linemitre Line mitre limit (number greater than 1).
 #' @param arrow Arrow specification, as created by [grid::arrow()].
+#'
+#' @return A ggproto layer object
 #'
 #' @export
 #' @examples
@@ -341,6 +346,8 @@ GeomBorderstep <- ggproto("GeomBorderstep", GeomBorderpath,
 #'   name(s) of the aesthetic(s) that this scale works with. This can be useful,
 #'   for example, to apply colour settings to the bordercolour and colour
 #'   aesthetics at the same time, via aesthetics = c("bordercolour", "colour").
+#'
+#' @return A ggproto scale object
 #'
 #' @export
 scale_bordercolour_continuous <- function(..., aesthetics = "bordercolour") {
