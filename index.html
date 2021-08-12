@@ -18,8 +18,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Line Plots that Pop">
-<meta property="og:description" content="{ggborderline} provides a set of geoms to make line plots a little 
-    bit nicer. Use this package along with ggplot2 to:
+<meta property="og:description" content="A set of geometries to make line plots a little bit nicer. Use 
+    along with ggplot2 to:
     - Improve the clarity of line plots with many overlapping lines
     - Draw more realistic worms.">
 <meta property="og:image" content="/logo.png">
@@ -92,12 +92,11 @@
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>Simply changing <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">ggplot2::geom_line()</a></code> for <code><a href="reference/geom_borderpath.html">geom_borderline()</a></code> can make a big difference:</p>
+<p>You can use ggborderline by swapping out {ggplot2} line geoms with their ‘<code>border</code>’ equivalents. For example, here is the effect of swapping <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">ggplot2::geom_line()</a></code> for <code><a href="reference/geom_borderpath.html">geom_borderline()</a></code>. Notice the white outline of lines in the first plot where different lines intersect:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wurli/ggborderline">ggborderline</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">dplyr</span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">patchwork</span><span class="op">)</span>
 
 <span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">economics_long</span> <span class="op">%&gt;%</span> 
   <span class="fu">group_by</span><span class="op">(</span>year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu">year</span><span class="op">(</span><span class="va">date</span><span class="op">)</span>, <span class="va">variable</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -108,8 +107,19 @@
 
 <span class="va">plot</span> <span class="op">+</span> <span class="fu"><a href="reference/geom_borderpath.html">geom_borderline</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Using `geom_borderline()`"</span><span class="op">)</span>
 <span class="va">plot</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Using `geom_line()`"</span><span class="op">)</span></code></pre></div>
-<img src="reference/figures/README-example-1.png" width="50%"><img src="reference/figures/README-example-2.png" width="50%"><details><p><summary> Click here for more uses </summary></p>
+<p><img src="reference/figures/README-example-1.png" width="50%"><img src="reference/figures/README-example-2.png" width="50%"></p>
+<p>This effect is best applied conservatively, hence the ‘default’ settings will only make a subtle (but hopefully positive) difference to existing plots. However you can still adjust the <code>bordersize</code> and <code>bordercolour</code> aesthetics. Notice that the border is also much more noticable in the legend too:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggdark</span><span class="op">)</span>
+
+<span class="va">plot</span> <span class="op">+</span> 
+  <span class="fu"><a href="reference/geom_borderpath.html">geom_borderline</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>bordercolour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html">after_scale</a></span><span class="op">(</span><span class="fu">invert_colour</span><span class="op">(</span><span class="va">colour</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+    bordersize <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">2</span>
+  <span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
+<details><p><summary> Click here for more uses </summary></p>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <p><a href="https://github.com/wurli/ggborderline/blob/main/README.Rmd">Worm code</a></p>
 </details>
 </div>
@@ -117,8 +127,11 @@
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
-<p>You can install the development version of ggborderline from <a href="https://github.com/wurli/ggborderline">github</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>You can install the released version of ggborderline from CRAN with:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggborderline"</span><span class="op">)</span></code></pre></div>
+<p>The development version of ggborderline can be installed from <a href="https://github.com/wurli/ggborderline">github</a> with:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"wurli/ggborderline"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="inspiration" class="section level1">
@@ -127,7 +140,7 @@
 I made this package after seeing this plot tweeted by <a href="https://twitter.com/_rospearce">Rosamund Pearce</a>, an experience that forever soured me to lines without borders:
 <blockquote class="twitter-tweet">
 <p lang="en" dir="ltr">
-I designed my first double-page <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> for The Economist!<br><br>It depicts our new ‘Normalcy index’, which tracks the world’s return to pre-pandemic life &gt;&gt; <a href="https://t.co/Iko6totfJN">https://t.co/Iko6totfJN</a> <a href="https://t.co/1sIUMoZco1">pic.twitter.com/1sIUMoZco1</a>
+I designed my first double-page <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> for The Economist!<br><br>It depicts our new ‘Normalcy index’, which tracks the world’s return to pre-pandemic life &gt;&gt; <a href="https://www.economist.com/graphic-detail/2021/07/03/our-normalcy-index-shows-life-is-halfway-back-to-pre-covid-norms">https://www.economist.com/graphic-detail/2021/07/03/our-normalcy-index-shows-life-is-halfway-back-to-pre-covid-norms</a> <a href="https://twitter.com/_rospearce/status/1410903833442717698/photo/1">pic.twitter.com/1sIUMoZco1</a>
 </p>
 — Rosamund Pearce (@_rospearce) <a href="https://twitter.com/_rospearce/status/1410903833442717698?ref_src=twsrc%5Etfw">July 2, 2021</a>
 </blockquote>
@@ -141,7 +154,7 @@ I designed my first double-page <a href="https://twitter.com/hashtag/dataviz?src
 <div id="credit" class="section level1">
 <h1 class="hasAnchor">
 <a href="#credit" class="anchor"></a>Credit</h1>
-<p>This package would not have been possible without the fantastic <a href="https://ggplot2.tidyverse.org/">ggplot2</a> package, and would have been very difficult without the <a href="https://ggplot2-book.org/">accompanying book</a>. My humble and sincere thanks go to all the authors who make projects like this possible.</p>
+<p>This package would not have been possible without the fantastic <a href="https://ggplot2.tidyverse.org/">ggplot2</a> package, and would have been very difficult without the <a href="https://ggplot2-book.org/">accompanying book</a>. My humble and sincere thanks go to all the authors and developers who make projects like this possible.</p>
 </div>
 
   </div>
@@ -150,6 +163,8 @@ I designed my first double-page <a href="https://twitter.com/hashtag/dataviz?src
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=ggborderline">https://​cloud.r-project.org/​package=ggborderline</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/wurli/ggborderline/">https://​github.com/​wurli/​ggborderline/​</a>
 </li>
 </ul>
@@ -172,6 +187,7 @@ I designed my first double-page <a href="https://twitter.com/hashtag/dataviz?src
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/wurli/ggborderline/actions"><img src="https://github.com/wurli/ggborderline/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://CRAN.R-project.org/package=ggborderline"><img src="https://www.r-pkg.org/badges/version/ggborderline" alt="CRAN status"></a></li>
 </ul>
 </div>
 </div>
