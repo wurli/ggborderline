@@ -153,9 +153,9 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
     if (nrow(munched) < 2) return(zeroGrob())
 
     # Work out whether we should use lines or segments
-    attr <- ggplot2:::dapply(munched, "group", function(df) {
+    attr <- dapply(munched, "group", function(df) {
       linetype <- unique(df$linetype)
-      ggplot2:::new_data_frame(list(
+      new_data_frame(list(
         solid = identical(linetype, 1) || identical(linetype, "solid"),
         constant = nrow(unique(df[, c("alpha", "colour","size", "linetype")])) == 1
       ), n = 1)
@@ -330,7 +330,7 @@ geom_borderstep <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @export
 GeomBorderstep <- ggproto("GeomBorderstep", GeomBorderpath,
   draw_panel = function(data, panel_params, coord, direction = "hv") {
-    data <- ggplot2:::dapply(data, "group", ggplot2:::stairstep, direction = direction)
+    data <- dapply(data, "group", stairstep, direction = direction)
     GeomBorderpath$draw_panel(data, panel_params, coord)
   }
 )

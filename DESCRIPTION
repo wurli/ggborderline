@@ -13,8 +13,11 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: false
 Imports: 
+    cli,
     ggplot2,
-    scales
-RoxygenNote: 7.1.1
+    rlang,
+    scales,
+    vctrs
+RoxygenNote: 7.2.1
 Roxygen:
     list(markdown = TRUE)
