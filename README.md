@@ -53,13 +53,14 @@ legend too:
 ``` r
 library(ggdark)
 
-plot + 
+p + 
   geom_borderline(
     aes(bordercolour = after_scale(invert_colour(colour))),
     borderwidth = 1, linewidth = 2
   )
-#> NULL
 ```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 <details>
 <summary>
