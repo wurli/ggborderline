@@ -16,7 +16,6 @@ Imports:
     cli,
     ggplot2,
     rlang,
-    scales,
     vctrs
 RoxygenNote: 7.2.1
 Roxygen:

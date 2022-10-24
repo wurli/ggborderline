@@ -19,7 +19,8 @@ dapply <- function(df, by, fun, ..., drop = TRUE) {
     res <- fun(x, ...)
     if (is.null(res)) return(res)
     if (length(res) == 0) return(data_frame0())
-    vars <- lapply(setNames(by, by), function(col) .subset2(x, col)[1])
+    names(by) <- by
+    vars <- lapply(by, function(col) .subset2(x, col)[1])
     if (is.matrix(res)) res <- split_matrix(res)
     if (is.null(names(res))) names(res) <- paste0("V", seq_along(res))
     if (all(by %in% names(res))) return(data_frame0(!!!unclass(res)))
