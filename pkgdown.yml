@@ -2,5 +2,8 @@ pandoc: 2.7.3
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-10-24T18:24Z
+last_built: 2022-10-24T21:30Z
+urls:
+  reference: https://wurli.github.io/ggborderline/reference
+  article: https://wurli.github.io/ggborderline/articles
 

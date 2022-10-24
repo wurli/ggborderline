@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://wurli.github.io/ggborderline/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://wurli.github.io/ggborderline/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://wurli.github.io/ggborderline/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://wurli.github.io/ggborderline/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://wurli.github.io/ggborderline/index.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://wurli.github.io/ggborderline/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/draw_key_borderpath.html</loc>
+    <loc>https://wurli.github.io/ggborderline/reference/draw_key_borderpath.html</loc>
   </url>
   <url>
-    <loc>/reference/geom_borderpath.html</loc>
+    <loc>https://wurli.github.io/ggborderline/reference/geom_borderpath.html</loc>
   </url>
   <url>
-    <loc>/reference/ggborderline-extensions.html</loc>
+    <loc>https://wurli.github.io/ggborderline/reference/ggborderline-extensions.html</loc>
   </url>
   <url>
-    <loc>/reference/ggborderline-package.html</loc>
+    <loc>https://wurli.github.io/ggborderline/reference/ggborderline-package.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://wurli.github.io/ggborderline/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/scale_bordercolour_continuous.html</loc>
+    <loc>https://wurli.github.io/ggborderline/reference/scale_bordercolour_continuous.html</loc>
   </url>
 </urlset>
