@@ -2,7 +2,7 @@ Package: ggborderline
 URL: https://github.com/wurli/ggborderline, https://wurli.github.io/ggborderline/ 
 Type: Package
 Title: Line Plots that Pop
-Version: 0.1.0
+Version: 0.2.0
 Author: Jacob Scott
 Maintainer: Jacob Scott <jscott2718@gmail.com>
 Description: A set of geometries to make line plots a little bit nicer. Use 
@@ -13,8 +13,13 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: false
 Imports: 
+    cli,
     ggplot2,
-    scales
-RoxygenNote: 7.1.1
+    rlang,
+    vctrs
+RoxygenNote: 7.2.1
 Roxygen:
     list(markdown = TRUE)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

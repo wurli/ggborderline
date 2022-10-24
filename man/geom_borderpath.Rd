@@ -49,10 +49,10 @@ geom_borderstep(
 )
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
-\code{\link[ggplot2:aes_]{aes_()}}. If specified and \code{inherit.aes = TRUE} (the
-default), it is combined with the default mapping at the top level of the
-plot. You must supply \code{mapping} if there is no plot mapping.}
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
+\code{inherit.aes = TRUE} (the default), it is combined with the default mapping
+at the top level of the plot. You must supply \code{mapping} if there is no plot
+mapping.}
 
 \item{data}{The data to be displayed in this layer. There are three
 options:
@@ -70,10 +70,14 @@ will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{stat}{The statistical transformation to use on the data for this
-layer, as a string.}
+layer, either as a \code{ggproto} \code{Geom} subclass or as a string naming the
+stat stripped of the \code{stat_} prefix (e.g. \code{"count"} rather than
+\code{"stat_count"})}
 
-\item{position}{Position adjustment, either as a string, or the result of
-a call to a position adjustment function.}
+\item{position}{Position adjustment, either as a string naming the adjustment
+(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.}
 
 \item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
@@ -113,7 +117,7 @@ A ggproto layer object
 This set of geoms is very similar to \code{ggplot2::geom_path()},
 \code{ggplot2::geom_line()} and \code{ggplot2::geom_step()}, with the only difference
 being that they accept two additional aesthetics, \code{bordercolour} and
-\code{bordersize}. For additional documentation, please refer to the ggplot2
+\code{borderwidth}. For additional documentation, please refer to the ggplot2
 geoms.
 }
 \examples{
@@ -123,10 +127,10 @@ require(ggplot2)
 ggplot(economics_long, aes(date, value01, colour = variable)) +
   geom_borderline()
 
-# You can control the size and colour of the border with the
-# bordersize and bordercolour aesthetics:
+# You can control the linewidth and colour of the border with the
+# borderwidth and bordercolour aesthetics:
 ggplot(economics_long, aes(date, value01, bordercolour = variable)) +
-  geom_borderline(bordersize = .4, colour = "white")
+  geom_borderline(borderwidth = .4, colour = "white")
 
 # The background 'border' part of the geom is always solid, however this
 # can be used to create some nice effects:
@@ -136,5 +140,5 @@ test_data <- data.frame(
   fun = rep(c("sin", "cos"), each = 500)
 )
 ggplot(test_data, aes(x, y, colour = fun)) +
-  geom_borderline(size = 1, linetype = "dashed", lineend = "round")
+  geom_borderline(linewidth = 1, linetype = "dashed", lineend = "round")
 }

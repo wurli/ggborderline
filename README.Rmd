@@ -32,25 +32,28 @@ equivalents. For example, here is the effect of swapping `ggplot2::geom_line()`
 for `geom_borderline()`. Notice the white outline of lines in the first plot where
 different lines intersect:
 
-```{r example, fig.show="hold", out.width="50%", fig.width = 5}
+```{r example, fig.show='hold', out.width='50%', fig.width=5}
 library(ggborderline)
 library(ggplot2)
 library(dplyr, warn.conflicts = FALSE)
 
-plot <- economics_long %>% 
-  group_by(year = lubridate::year(date), variable) %>% 
-  summarise(yearly_total = sum(value01), .groups = "drop") %>% 
-  filter(year %in% 1970:2010) %>% 
-  ggplot(aes(year, yearly_total, colour = variable)) +
+p <- txhousing |>
+  filter(
+    city %in% c("Houston", "Midland", "Beaumont", "Laredo"),
+    !is.na(median)
+  ) |>
+  ggplot(aes(date, median, colour = city)) +
+  scale_y_continuous(labels = scales::label_dollar()) +
+  scale_colour_brewer(palette = "Paired") +
   theme(legend.position = "bottom")
 
-plot + geom_borderline() + ggtitle("Using `geom_borderline()`")
-plot + geom_line() + ggtitle("Using `geom_line()`")
+p + geom_borderline(linewidth = 1) + ggtitle("Using `geom_borderline()`")
+p + geom_line(linewidth = 1) + ggtitle("Using `geom_line()`")
 ```
 
 This effect is best applied conservatively, hence the 'default' settings
 will only make a subtle (but hopefully positive) difference to existing plots. 
-However you can still adjust the `bordersize` and `bordercolour` aesthetics.
+However you can still adjust the `borderwidth` and `bordercolour` aesthetics.
 Notice that the border is also much more noticable in the legend too:
 ```{r}
 library(ggdark)
@@ -58,7 +61,7 @@ library(ggdark)
 plot + 
   geom_borderline(
     aes(bordercolour = after_scale(invert_colour(colour))),
-    bordersize = 1, size = 2
+    borderwidth = 1, linewidth = 2
   )
 ```
 
@@ -81,7 +84,7 @@ background <- data.frame(
 
 ggplot(worms, aes(x, y, colour = colour)) +
   geom_point(data = background, size = 2.5, alpha = 0.8) +
-  geom_borderline(size = 10, bordersize = 1, bordercolour = "pink3", lineend = "round") +
+  geom_borderline(linewidth = 10, borderwidth = 1, bordercolour = "pink3", lineend = "round") +
   scale_colour_identity() +
   theme_void() +
   theme(panel.background = element_rect(fill = "grey10")) +

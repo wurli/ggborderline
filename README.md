@@ -13,8 +13,8 @@ status](https://www.r-pkg.org/badges/version/ggborderline)](https://CRAN.R-proje
 nicer. Use this package along with
 [ggplot2](https://ggplot2.tidyverse.org/) to:
 
--   Improve the clarity of line plots with many overlapping lines
--   Draw more realistic worms
+- Improve the clarity of line plots with many overlapping lines
+- Draw more realistic worms
 
 ## Usage
 
@@ -28,22 +28,25 @@ library(ggborderline)
 library(ggplot2)
 library(dplyr, warn.conflicts = FALSE)
 
-plot <- economics_long %>% 
-  group_by(year = lubridate::year(date), variable) %>% 
-  summarise(yearly_total = sum(value01), .groups = "drop") %>% 
-  filter(year %in% 1970:2010) %>% 
-  ggplot(aes(year, yearly_total, colour = variable)) +
+p <- txhousing |>
+  filter(
+    city %in% c("Houston", "Midland", "Beaumont", "Laredo"),
+    !is.na(median)
+  ) |>
+  ggplot(aes(date, median, colour = city)) +
+  scale_y_continuous(labels = scales::label_dollar()) +
+  scale_colour_brewer(palette = "Paired") +
   theme(legend.position = "bottom")
 
-plot + geom_borderline() + ggtitle("Using `geom_borderline()`")
-plot + geom_line() + ggtitle("Using `geom_line()`")
+p + geom_borderline(linewidth = 1) + ggtitle("Using `geom_borderline()`")
+p + geom_line(linewidth = 1) + ggtitle("Using `geom_line()`")
 ```
 
 <img src="man/figures/README-example-1.png" width="50%" /><img src="man/figures/README-example-2.png" width="50%" />
 
 This effect is best applied conservatively, hence the ‘default’ settings
 will only make a subtle (but hopefully positive) difference to existing
-plots. However you can still adjust the `bordersize` and `bordercolour`
+plots. However you can still adjust the `borderwidth` and `bordercolour`
 aesthetics. Notice that the border is also much more noticable in the
 legend too:
 
@@ -53,11 +56,10 @@ library(ggdark)
 plot + 
   geom_borderline(
     aes(bordercolour = after_scale(invert_colour(colour))),
-    bordersize = 1, size = 2
+    borderwidth = 1, linewidth = 2
   )
+#> NULL
 ```
-
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 <details>
 <summary>
@@ -94,8 +96,8 @@ soured me to lines without borders:
 <p lang="en" dir="ltr">
 I designed my first double-page
 <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">\#dataviz</a>
-for The Economist!<br><br>It depicts our new ‘Normalcy index’, which
-tracks the world's return to pre-pandemic life &gt;&gt;
+for The Economist!<br><br>It depicts our new 'Normalcy index', which
+tracks the world's return to pre-pandemic life \>\>
 <a href="https://www.economist.com/graphic-detail/2021/07/03/our-normalcy-index-shows-life-is-halfway-back-to-pre-covid-norms">https://www.economist.com/graphic-detail/2021/07/03/our-normalcy-index-shows-life-is-halfway-back-to-pre-covid-norms</a>
 <a href="https://twitter.com/_rospearce/status/1410903833442717698/photo/1">pic.twitter.com/1sIUMoZco1</a>
 </p>
