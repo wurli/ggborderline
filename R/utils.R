@@ -179,3 +179,53 @@ stairstep <- function(data, direction = "hv") {
 
   data_frame0(x = x, y = y, data_attr)
 }
+
+# Taken from ggplot2
+snake_class <- function(x) {
+  snakeize(class(x)[1])
+}
+
+# Taken from ggplot2
+snakeize <- function(x) {
+  x <- gsub("([A-Za-z])([A-Z])([a-z])", "\\1_\\2\\3", x)
+  x <- gsub(".", "_", x, fixed = TRUE)
+  x <- gsub("([a-z])([A-Z])", "\\1_\\2", x)
+  to_lower_ascii(x)
+}
+
+# Taken from ggplot2
+lower_ascii <- "abcdefghijklmnopqrstuvwxyz"
+upper_ascii <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+to_lower_ascii <- function(x) chartr(upper_ascii, lower_ascii, x)
+
+# Taken from ggplot2
+# Trim false values from left and right: keep all values from
+# first TRUE to last TRUE
+keep_mid_true <- function(x) {
+  first <- match(TRUE, x) - 1
+  if (is.na(first)) {
+    return(rep(FALSE, length(x)))
+  }
+
+  last <- length(x) - match(TRUE, rev(x)) + 1
+  c(
+    rep(FALSE, first),
+    rep(TRUE, last - first),
+    rep(FALSE, length(x) - last)
+  )
+}
+
+# Taken from ggplot2
+single_value <- function(x, ...) {
+  UseMethod("single_value")
+}
+#' @export
+single_value.default <- function(x, ...) {
+  # This is set by id() used in creating the grouping var
+  identical(attr(x, "n"), 1L)
+}
+#' @export
+single_value.factor <- function(x, ...) {
+  # Panels are encoded as factor numbers and can never be missing (NA)
+  identical(levels(x), "1")
+}

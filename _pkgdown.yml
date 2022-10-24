@@ -1,3 +1,7 @@
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
 reference:
 - title: "Additional Geoms"
 - contents:

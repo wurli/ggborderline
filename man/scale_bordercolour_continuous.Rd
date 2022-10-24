@@ -3,17 +3,17 @@
 \name{scale_bordercolour_continuous}
 \alias{scale_bordercolour_continuous}
 \alias{scale_bordercolour_discrete}
-\alias{scale_bordersize_continuous}
-\alias{scale_bordersize_discrete}
+\alias{scale_borderwidth_continuous}
+\alias{scale_borderwidth_discrete}
 \title{Scales for borderlines}
 \usage{
 scale_bordercolour_continuous(..., aesthetics = "bordercolour")
 
 scale_bordercolour_discrete(..., aesthetics = "bordercolour")
 
-scale_bordersize_continuous(..., aesthetics = "bordersize")
+scale_borderwidth_continuous(..., aesthetics = "borderwidth")
 
-scale_bordersize_discrete(..., aesthetics = "bordersize")
+scale_borderwidth_discrete(..., aesthetics = "borderwidth")
 }
 \arguments{
 \item{...}{Passed to the corresponding ggplot2 scales}
@@ -27,7 +27,7 @@ aesthetics at the same time, via aesthetics = c("bordercolour", "colour").}
 A ggproto scale object
 }
 \description{
-These scales control the size and colour of the borders in borderlines. They
-work in much the same way as \code{ggplot2::scale_colour_continuous()},
-\code{ggplot2::scale_size_discrete()}, etc.
+These scales control the linewidth and colour of the borders in borderlines.
+They work in much the same way as \code{ggplot2::scale_colour_continuous()},
+\code{ggplot2::scale_linewidth_discrete()}, etc.
 }

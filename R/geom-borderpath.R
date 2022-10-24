@@ -3,6 +3,7 @@
 #' @param data,params,size See `ggplot2::draw_key_path()` for usage
 #'
 #' @return A gTree object
+#' @keywords internal
 #'
 #' @export
 draw_key_borderpath <- function(data, params, size) {
@@ -20,9 +21,11 @@ draw_key_borderpath <- function(data, params, size) {
       arrow = params$arrow,
       gp = gpar(
         col = alpha(data$bordercolour %||% data$fill %||% "white", data$alpha),
-        fill = alpha(params$arrow.fill %||% data$colour
-                     %||% data$fill %||% "white", data$alpha),
-        lwd = (data$size %||% 0.5 + (data$bordersize %||%  0.5) * 2) * .pt,
+        fill = alpha(
+          params$arrow.fill %||% data$colour %||% data$fill %||% "white",
+          data$alpha
+        ),
+        lwd = (data$linewidth %||% 0.5 + (data$borderwidth %||% 0.5) * 2) * .pt,
         lty = data$linetype %||% 1,
         lineend = "butt"
 
@@ -36,9 +39,11 @@ draw_key_borderpath <- function(data, params, size) {
       arrow = params$arrow,
       gp = gpar(
         col = alpha(data$colour %||% data$fill %||% "black", data$alpha),
-        fill = alpha(params$arrow.fill %||% data$colour
-                     %||% data$fill %||% "black", data$alpha),
-        lwd = (data$size %||% 0.5) * .pt,
+        fill = alpha(
+          params$arrow.fill %||% data$colour %||% data$fill %||% "black",
+          data$alpha
+        ),
+        lwd = (data$linewidth %||% 0.5) * .pt,
         lty = data$linetype %||% 1,
         lineend = "butt"
         # lineend = params$lineend %||% "butt"
@@ -52,7 +57,7 @@ draw_key_borderpath <- function(data, params, size) {
 #' This set of geoms is very similar to `ggplot2::geom_path()`,
 #' `ggplot2::geom_line()` and `ggplot2::geom_step()`, with the only difference
 #' being that they accept two additional aesthetics, `bordercolour` and
-#' `bordersize`. For additional documentation, please refer to the ggplot2
+#' `borderwidth`. For additional documentation, please refer to the ggplot2
 #' geoms.
 #'
 #' @inheritParams ggplot2::layer
@@ -75,10 +80,10 @@ draw_key_borderpath <- function(data, params, size) {
 #' ggplot(economics_long, aes(date, value01, colour = variable)) +
 #'   geom_borderline()
 #'
-#' # You can control the size and colour of the border with the
-#' # bordersize and bordercolour aesthetics:
+#' # You can control the linewidth and colour of the border with the
+#' # borderwidth and bordercolour aesthetics:
 #' ggplot(economics_long, aes(date, value01, bordercolour = variable)) +
-#'   geom_borderline(bordersize = .4, colour = "white")
+#'   geom_borderline(borderwidth = .4, colour = "white")
 #'
 #' # The background 'border' part of the geom is always solid, however this
 #' # can be used to create some nice effects:
@@ -88,7 +93,7 @@ draw_key_borderpath <- function(data, params, size) {
 #'   fun = rep(c("sin", "cos"), each = 500)
 #' )
 #' ggplot(test_data, aes(x, y, colour = fun)) +
-#'   geom_borderline(size = 1, linetype = "dashed", lineend = "round")
+#'   geom_borderline(linewidth = 1, linetype = "dashed", lineend = "round")
 geom_borderpath <- function(mapping = NULL, data = NULL,
                             stat = "identity", position = "identity",
                             ...,
@@ -120,12 +125,30 @@ geom_borderpath <- function(mapping = NULL, data = NULL,
 
 #' @rdname ggborderline-extensions
 #' @export
+#' @keywords internal
 GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
 
   default_aes = aes(
-    colour = "black", size = 0.5, linetype = 1, alpha = NA,
-    bordercolour = "white", bordersize = 0.2
+    colour = "black", linewidth = 0.5, linetype = 1, alpha = NA,
+    bordercolour = "white", borderwidth = NULL
   ),
+
+  handle_na = function(self, data, params) {
+
+    data$borderwidth <- data$borderwidth %||% (data$linewidth * 0.4)
+
+    # Drop missing values at the start or end of a line - can't drop in the
+    # middle since you expect those to be shown by a break in the line
+    complete <- stats::complete.cases(data[c("x", "y", "linewidth", "colour", "linetype")])
+    kept <- stats::ave(complete, data$group, FUN = keep_mid_true)
+    data <- data[kept, ]
+
+    if (!all(kept) && !params$na.rm) {
+      cli::cli_warn("Removed {sum(!kept)} row{?s} containing missing values ({.fn {snake_class(self)}}).")
+    }
+
+    data
+  },
 
   draw_panel = function(data, panel_params, coord, arrow = NULL,
                         lineend = "butt", linejoin = "round", linemitre = 10,
@@ -140,13 +163,6 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
     data <- data[order(data$group), , drop = FALSE]
     munched <- coord_munch(coord, data, panel_params)
 
-    if (!all(is.na(munched$alpha) | munched$alpha == 1)) {
-      warning(
-        "Use of alpha with borderlines is discouraged - use with caution!",
-        call. = FALSE
-      )
-    }
-
     # Silently drop lines with less than two points, preserving order
     rows <- stats::ave(seq_len(nrow(munched)), munched$group, FUN = length)
     munched <- munched[rows >= 2, ]
@@ -155,22 +171,25 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
     # Work out whether we should use lines or segments
     attr <- dapply(munched, "group", function(df) {
       linetype <- unique(df$linetype)
-      new_data_frame(list(
-        solid = identical(linetype, 1) || identical(linetype, "solid"),
-        constant = nrow(unique(df[, c("alpha", "colour","size", "linetype")])) == 1
-      ), n = 1)
+      new_data_frame(
+        list(
+          solid = identical(linetype, 1) || identical(linetype, "solid"),
+          constant = nrow(unique(df[, c("alpha", "colour", "linewidth", "linetype")])) == 1
+        ),
+        n = 1L
+      )
     })
     solid_lines <- all(attr$solid)
     constant <- all(attr$constant)
     if (!solid_lines && !constant) {
-      abort("geom_path: If you are using dotted or dashed lines, colour, size and linetype must be constant over the line")
+      abort("geom_path: If you are using dotted or dashed lines, colour, linewidth and linetype must be constant over the line")
     }
 
     # Work out grouping variables for grobs
     n <- nrow(munched)
     group_diff <- munched$group[-1] != munched$group[-n]
-    start <- c(TRUE, group_diff)
-    end <-   c(group_diff, TRUE)
+    start      <- c(TRUE, group_diff)
+    end        <- c(group_diff, TRUE)
 
     if (!constant) {
       gList(
@@ -181,7 +200,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
           gp = gpar(
             col = alpha(munched$bordercolour, munched$alpha)[!end],
             fill = alpha(munched$bordercolour, munched$alpha)[!end],
-            lwd = (munched$size[start] + munched$bordersize[start] * 2) * .pt,
+            lwd = (munched$linewidth[start] + munched$borderwidth[start] * 2) * .pt,
             lty = "solid",
             lineend = lineend,
             linejoin = linejoin,
@@ -195,7 +214,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
           gp = gpar(
             col = alpha(munched$bordercolour, munched$alpha)[!end],
             fill = alpha(munched$bordercolour, munched$alpha)[!end],
-            lwd = munched$size[start] * .pt,
+            lwd = munched$linewidth[start] * .pt,
             lty = munched$linetype[!end],
             lineend = lineend,
             linejoin = linejoin,
@@ -219,7 +238,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
             gp = gpar(
               col = alpha(m$bordercolour, m$alpha)[start],
               fill = alpha(m$bordercolour, m$alpha)[start],
-              lwd = (m$size[start] + m$bordersize[start] * 2) * .pt,
+              lwd = (m$linewidth[start] + m$borderwidth[start] * 2) * .pt,
               lty = "solid",
               lineend = lineend,
               linejoin = linejoin,
@@ -233,7 +252,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
             gp = gpar(
               col = alpha(m$colour, m$alpha)[start],
               fill = alpha(m$colour, m$alpha)[start],
-              lwd = m$size[start] * .pt,
+              lwd = m$linewidth[start] * .pt,
               lty = m$linetype[start],
               lineend = lineend,
               linejoin = linejoin,
@@ -249,7 +268,9 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
     }
   },
 
-  draw_key = draw_key_borderpath
+  draw_key = draw_key_borderpath,
+
+  rename_size = TRUE
 
 )
 
@@ -337,9 +358,9 @@ GeomBorderstep <- ggproto("GeomBorderstep", GeomBorderpath,
 
 #' Scales for borderlines
 #'
-#' These scales control the size and colour of the borders in borderlines. They
-#' work in much the same way as `ggplot2::scale_colour_continuous()`,
-#' `ggplot2::scale_size_discrete()`, etc.
+#' These scales control the linewidth and colour of the borders in borderlines.
+#' They work in much the same way as `ggplot2::scale_colour_continuous()`,
+#' `ggplot2::scale_linewidth_discrete()`, etc.
 #'
 #' @param ... Passed to the corresponding ggplot2 scales
 #' @param aesthetics Character string or vector of character strings listing the
@@ -366,16 +387,16 @@ scale_bordercolour_discrete <- function(..., aesthetics = "bordercolour") {
 
 #' @rdname scale_bordercolour_continuous
 #' @export
-scale_bordersize_continuous <- function(..., aesthetics = "bordersize") {
-  out <- scale_size_continuous(...)
+scale_borderwidth_continuous <- function(..., aesthetics = "borderwidth") {
+  out <- scale_linewidth_continuous(...)
   out$aesthetics <- aesthetics
   out
 }
 
 #' @rdname scale_bordercolour_continuous
 #' @export
-scale_bordersize_discrete <- function(..., aesthetics = "bordersize") {
-  out <- scale_size_discrete(...)
+scale_borderwidth_discrete <- function(..., aesthetics = "borderwidth") {
+  out <- scale_linewidth_discrete(...)
   out$aesthetics <- aesthetics
   out
 }

@@ -15,3 +15,4 @@ A gTree object
 \description{
 Key glyphs for legends
 }
+\keyword{internal}
