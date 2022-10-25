@@ -25,7 +25,7 @@ draw_key_borderpath <- function(data, params, size) {
           params$arrow.fill %||% data$colour %||% data$fill %||% "white",
           data$alpha
         ),
-        lwd = (data$linewidth %||% 0.5 + (data$borderwidth %||% 0.5) * 2) * .pt,
+        lwd = (data$linewidth %||% data$size %||% 0.5 + (data$borderwidth %||% 0.5) * 2) * .pt,
         lty = data$linetype %||% 1,
         lineend = "butt"
 
@@ -43,7 +43,7 @@ draw_key_borderpath <- function(data, params, size) {
           params$arrow.fill %||% data$colour %||% data$fill %||% "black",
           data$alpha
         ),
-        lwd = (data$linewidth %||% 0.5) * .pt,
+        lwd = (data$linewidth %||% data$size %||% 0.5) * .pt,
         lty = data$linetype %||% 1,
         lineend = "butt"
         # lineend = params$lineend %||% "butt"
@@ -130,16 +130,23 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
 
   default_aes = aes(
     colour = "black", linewidth = 0.5, linetype = 1, alpha = NA,
-    bordercolour = "white", borderwidth = NULL
+    bordercolour = "white", borderwidth = NULL, size = NULL
   ),
 
   handle_na = function(self, data, params) {
 
+    if (!is.null(data$size) && utils::packageVersion("ggplot2") >= "3.4.0") {
+      inform("The use of `size` is deprecated, please use `linewidth` instead")
+    }
+
+    data$linewidth   <- data$size %||% data$linewidth
     data$borderwidth <- data$borderwidth %||% (data$linewidth * 0.4)
 
     # Drop missing values at the start or end of a line - can't drop in the
     # middle since you expect those to be shown by a break in the line
-    complete <- stats::complete.cases(data[c("x", "y", "linewidth", "colour", "linetype")])
+    complete <- stats::complete.cases(
+      data[c("x", "y", "linewidth", "borderwidth", "colour", "bordercolour", "linetype")]
+    )
     kept <- stats::ave(complete, data$group, FUN = keep_mid_true)
     data <- data[kept, ]
 
@@ -200,7 +207,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
           gp = gpar(
             col = alpha(munched$bordercolour, munched$alpha)[!end],
             fill = alpha(munched$bordercolour, munched$alpha)[!end],
-            lwd = (munched$linewidth[start] + munched$borderwidth[start] * 2) * .pt,
+            lwd = ((munched$linewidth %||% munched$size)[start] + munched$borderwidth[start] * 2) * .pt,
             lty = "solid",
             lineend = lineend,
             linejoin = linejoin,
@@ -214,7 +221,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
           gp = gpar(
             col = alpha(munched$bordercolour, munched$alpha)[!end],
             fill = alpha(munched$bordercolour, munched$alpha)[!end],
-            lwd = munched$linewidth[start] * .pt,
+            lwd = (munched$linewidth %||% munched$size)[start] * .pt,
             lty = munched$linetype[!end],
             lineend = lineend,
             linejoin = linejoin,
@@ -238,7 +245,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
             gp = gpar(
               col = alpha(m$bordercolour, m$alpha)[start],
               fill = alpha(m$bordercolour, m$alpha)[start],
-              lwd = (m$linewidth[start] + m$borderwidth[start] * 2) * .pt,
+              lwd = ((m$linewidth %||% m$size)[start] + m$borderwidth[start] * 2) * .pt,
               lty = "solid",
               lineend = lineend,
               linejoin = linejoin,
@@ -252,7 +259,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
             gp = gpar(
               col = alpha(m$colour, m$alpha)[start],
               fill = alpha(m$colour, m$alpha)[start],
-              lwd = m$linewidth[start] * .pt,
+              lwd = (m$linewidth %||% m$size)[start] * .pt,
               lty = m$linetype[start],
               lineend = lineend,
               linejoin = linejoin,
@@ -270,6 +277,7 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
 
   draw_key = draw_key_borderpath,
 
+  non_missing_aes = "size",
   rename_size = TRUE
 
 )
@@ -388,15 +396,31 @@ scale_bordercolour_discrete <- function(..., aesthetics = "bordercolour") {
 #' @rdname scale_bordercolour_continuous
 #' @export
 scale_borderwidth_continuous <- function(..., aesthetics = "borderwidth") {
-  out <- scale_linewidth_continuous(...)
+
+  scale <- if (utils::packageVersion("ggplot2") < "3.4.0") {
+    scale_size_continuous
+  } else {
+    scale_linewidth_continuous
+  }
+
+  out <- scale(...)
   out$aesthetics <- aesthetics
   out
+
 }
 
 #' @rdname scale_bordercolour_continuous
 #' @export
 scale_borderwidth_discrete <- function(..., aesthetics = "borderwidth") {
-  out <- scale_linewidth_discrete(...)
+
+  scale <- if (utils::packageVersion("ggplot2") < "3.4.0") {
+    scale_size_discrete
+  } else {
+    scale_linewidth_discrete
+  }
+
+  out <- scale(...)
   out$aesthetics <- aesthetics
   out
+
 }
