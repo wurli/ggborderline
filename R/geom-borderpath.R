@@ -135,8 +135,8 @@ GeomBorderpath <- ggproto("GeomBorderpath", GeomPath,
 
   handle_na = function(self, data, params) {
 
-    if (!is.null(data$size) && utils::packageVersion("ggplot2") >= "3.4.0") {
-      inform("The use of `size` is deprecated, please use `linewidth` instead")
+    if (!is.null(data$size) && utils::packageVersion("ggplot2") >= "3.3.6.9000") {
+      inform("The use of `size` is deprecated since ggplot2 3.4.0, please use `linewidth` instead")
     }
 
     data$linewidth   <- data$size %||% data$linewidth
