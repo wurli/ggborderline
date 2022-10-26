@@ -1,3 +1,5 @@
+# ggborderline (development version)
+
 # ggborderline 0.2.0
 
 * `geom_borderline()` and friends now use `linewidth` and `borderwidth` instead

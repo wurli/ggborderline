@@ -2,7 +2,7 @@ Package: ggborderline
 URL: https://github.com/wurli/ggborderline, https://wurli.github.io/ggborderline/ 
 Type: Package
 Title: Line Plots that Pop
-Version: 0.2.0
+Version: 0.2.0.9000
 Author: Jacob Scott
 Maintainer: Jacob Scott <jscott2718@gmail.com>
 Description: A set of geometries to make line plots a little bit nicer. Use 
