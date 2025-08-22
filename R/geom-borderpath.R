@@ -424,3 +424,34 @@ scale_borderwidth_discrete <- function(..., aesthetics = "borderwidth") {
   out
 
 }
+
+set_border_palettes <- function() {
+  # Skip in old version
+  if (!"element_geom" %in% getNamespaceExports("ggplot2")) {
+    return()
+  }
+  new_pal <- function(inherit) {
+    el_def(c("character", "function"), inherit = inherit)
+  }
+
+  register_theme_elements(
+    palette.bordercolour.continuous = scales::pal_seq_gradient("#132B43", "#56B1F7"),
+    palette.bordercolour.discrete = scales::pal_hue(),
+    palette.borderwidth.continuous = scales::pal_rescale(c(1, 6)),
+    palette.borderwidth.discrete = function(n) seq(2, 6, length.out = n),
+    element_tree = list(
+      palette.bordercolour.continuous =
+        el_def(c("character", "function"), "palette.colour.continuous"),
+      palette.bordercolour.discrete =
+        el_def(c("character", "function"), "palette.colour.discrete"),
+      palette.borderwidth.continuous =
+        el_def(c("character", "numeric", "integer", "function"), "palette.linewidth.continuous"),
+      palette.borderwidth.discrete =
+        el_def(c("character", "numeric", "integer", "function"), "palette.linewidth.discrete")
+    )
+  )
+}
+
+.onLoad <- function(...) {
+  set_border_palettes()
+}
